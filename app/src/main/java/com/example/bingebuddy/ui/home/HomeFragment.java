@@ -11,25 +11,40 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bingebuddy.R;
+import com.example.bingebuddy.ui.shows.Show;
+import com.example.bingebuddy.ui.shows.ShowAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomeFragment extends Fragment {
+    private RecyclerView                mRecyclerView;
+    private RecyclerView.Adapter        mAdapter;
+    //private RecyclerView.LayoutManager  mLayoutManager;
 
-    private HomeViewModel homeViewModel;
+    //private HomeViewModel homeViewModel;
+    public HomeFragment(){}
 
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+
+        List<Show> showList = new ArrayList<>();
+        showList.add(new Show(1,"Captain Marvel","A really awesome movie"));
+        showList.add(new Show(1,"Captain Marvel","A really awesome movie"));
+        showList.add(new Show(1,"Captain Marvel","A really awesome movie"));
+
+        mRecyclerView = (RecyclerView) root.findViewById(R.id.recyclerView);
+        mRecyclerView.setHasFixedSize(true);
+        mAdapter = new ShowAdapter(showList);
+
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setAdapter(mAdapter);
         return root;
     }
 }
