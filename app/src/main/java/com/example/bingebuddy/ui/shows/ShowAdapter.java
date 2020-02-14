@@ -7,6 +7,12 @@ Science, College of Engineering, University
 of the Philippines, Diliman for the AY 2015-
 2016.
 */
+//File Creation Date: 02/14/2020
+//Software purpose: show class adapter for recyclerView
+
+//changelog
+//Update: Samuel Jose, 02/14/2020
+
 package com.example.bingebuddy.ui.shows;
 
 import android.content.Context;

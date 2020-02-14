@@ -7,6 +7,11 @@ Science, College of Engineering, University
 of the Philippines, Diliman for the AY 2015-
 2016.
 */
+//File Creation Date: 01/30/2020
+//Software purpose: handles data on the tools section of the application
+
+//changelog
+//Update: Samuel Jose, 01/30/2020
 
 package com.example.bingebuddy.ui.tools;
 

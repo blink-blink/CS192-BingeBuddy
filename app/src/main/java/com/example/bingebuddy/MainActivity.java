@@ -7,6 +7,14 @@ Science, College of Engineering, University
 of the Philippines, Diliman for the AY 2015-
 2016.
 */
+//File Creation Date: 01/30/2020
+//Software purpose: This is the main activity of the application. This sets the default views/ layouts that will be
+//displayed on application startup
+
+//changelog
+//Update: Samuel Jose, 01/30/2020
+//Update: Samuel Jose, 02/14/2020
+//  -added some variables in preparation for trakt api
 
 package com.example.bingebuddy;
 
