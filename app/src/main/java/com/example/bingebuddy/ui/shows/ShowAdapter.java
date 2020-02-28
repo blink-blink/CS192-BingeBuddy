@@ -32,7 +32,7 @@ import java.util.List;
 
 import static android.app.PendingIntent.getActivity;
 
-public class ShowAdapter extends RecyclerView.Adapter<ShowAdapter.MyViewHolder>{
+public class    ShowAdapter extends RecyclerView.Adapter<ShowAdapter.MyViewHolder>{
     //private Context mContext;
     private List<Show> showList;
 
