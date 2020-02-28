@@ -19,6 +19,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -48,6 +49,14 @@ public class    ShowAdapter extends RecyclerView.Adapter<ShowAdapter.MyViewHolde
 
     @Override
     public void onBindViewHolder(final ShowAdapter.MyViewHolder viewHolder, int i){
+        viewHolder.deleteButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                Show theRemovedItem = showList.get(i);
+                // remove your item from data base
+                showList.remove(i);  // remove the item from list
+                notifyItemRemoved(i); // notify the adapter about the removed item
+            }
+        });
         //get data from database. ignore this for now
     }
 
@@ -57,12 +66,16 @@ public class    ShowAdapter extends RecyclerView.Adapter<ShowAdapter.MyViewHolde
     public class MyViewHolder extends RecyclerView.ViewHolder{
         public TextView title, language;
         public ImageView thumbnail;
+        public Button deleteButton;
 
         public MyViewHolder(View view){
             super(view);
             title = (TextView) view.findViewById(R.id.textViewTitle);
             language = (TextView) view.findViewById(R.id.textViewLanguage);
             ImageView thumbnail = (ImageView) view.findViewById((R.id.imageView));
+            deleteButton = view.findViewById(R.id.deleteButton);
+            //setup delete button
+
 
             //set up on click listener
             view.setOnClickListener(new View.OnClickListener(){
