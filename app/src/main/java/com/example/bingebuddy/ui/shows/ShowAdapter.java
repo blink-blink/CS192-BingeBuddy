@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.bingebuddy.MainActivity;
 import com.example.bingebuddy.R;
 import com.google.android.material.snackbar.Snackbar;
@@ -34,11 +35,12 @@ import java.util.List;
 import static android.app.PendingIntent.getActivity;
 
 public class    ShowAdapter extends RecyclerView.Adapter<ShowAdapter.MyViewHolder>{
-    //private Context mContext;
+    private Context mContext;
     private List<Show> showList;
 
-    public ShowAdapter(List<Show> showList){
+    public ShowAdapter(Context mContext, List<Show> showList){
         this.showList = showList;
+        this.mContext = mContext;
     }
 
     @Override
@@ -49,6 +51,16 @@ public class    ShowAdapter extends RecyclerView.Adapter<ShowAdapter.MyViewHolde
 
     @Override
     public void onBindViewHolder(final ShowAdapter.MyViewHolder viewHolder, int i){
+        viewHolder.title.setText(showList.get(i).getTitle());
+
+        //poster
+        String poster = "https://image.tmdb.org/t/p/w500" + "/n6bUvigpRFqSwmPp1m2YADdbRBc.jpg";
+
+        Glide.with(mContext)
+                .load(poster)
+                .placeholder(/*R.drawable.load*/null)
+                .into(viewHolder.thumbnail);
+
         viewHolder.deleteButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 Show theRemovedItem = showList.get(i);
@@ -72,7 +84,7 @@ public class    ShowAdapter extends RecyclerView.Adapter<ShowAdapter.MyViewHolde
             super(view);
             title = (TextView) view.findViewById(R.id.textViewTitle);
             language = (TextView) view.findViewById(R.id.textViewLanguage);
-            ImageView thumbnail = (ImageView) view.findViewById((R.id.imageView));
+            thumbnail = (ImageView) view.findViewById((R.id.imageView));
             deleteButton = view.findViewById(R.id.deleteButton);
             //setup delete button
 

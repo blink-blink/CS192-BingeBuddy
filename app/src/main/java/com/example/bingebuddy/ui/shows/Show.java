@@ -48,4 +48,8 @@ public class Show {
         this.posterPath = posterPath;
     }
 
+    public String getTitle(){
+        return title;
+    }
+
 }

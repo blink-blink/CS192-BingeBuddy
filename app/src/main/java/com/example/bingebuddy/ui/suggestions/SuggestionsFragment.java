@@ -16,6 +16,8 @@ of the Philippines, Diliman for the AY 2015-
 package com.example.bingebuddy.ui.suggestions;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -26,6 +28,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -65,9 +68,15 @@ public class SuggestionsFragment extends Fragment {
     private View root;
     ProgressDialog pd;
 
+    //shared pref
+    private static final String PREF = "testPref";
+    private static final String scAccessToken = "AccessToken";
+    private SharedPreferences sp;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        accessToken  = ((MainActivity)getActivity()).getAccessToken();
+        sp = ((MainActivity)getActivity()).getSharedPreferences(PREF, Context.MODE_PRIVATE);
+        accessToken  = sp.getString(scAccessToken,"");
         clientId  = ((MainActivity)getActivity()).getClientId();
 
         root = inflater.inflate(R.layout.fragment_suggestions, container, false);

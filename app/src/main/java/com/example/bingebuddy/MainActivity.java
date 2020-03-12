@@ -20,6 +20,7 @@ package com.example.bingebuddy;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -60,15 +61,16 @@ public class MainActivity extends AppCompatActivity {
     //Trakt.tv API stuff (redirecturi, clientId and secret should be stored in gradle.properties, and access token and refresh token should be
     //stored in database once it is connected
 
+    private static final String PREF = "testPref";
+    private static final String scAccessToken = "AccessToken";
+    private SharedPreferences sp;
     private String clientId = "b3825447e716f64c278c9768add7022ebe67644fc9adb4530f343bd8b56b6c6f";
     private String clientSecret = "8bc0fd46dc7ab5b77650ccfd46a4b6ecd618a85dc53bed09875026ce05ba2170";
     private String redirectUri = "bingebuddy://callback";
-    private static String accessToken = ""; //pls dont judge
+    //private static String accessToken = ""; //pls dont judge
 
     //to be changed since we will use database
-    public String getAccessToken(){
-        return accessToken;
-    }
+//    public String getAccessToken(){ return accessToken; }
     public String getClientId(){
         return clientId;
     }
@@ -82,21 +84,7 @@ public class MainActivity extends AppCompatActivity {
         //set toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //floating action button for addshows
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!isConnected()) {
-                    Snackbar.make(view, "No Internet Connection", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                }
-                else{
-                    Snackbar.make(view, "May internet", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                }
-            }
-        });
+
         //nav bar
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -111,8 +99,24 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+        //floating action button for addshows
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!isConnected()) {
+                    Snackbar.make(view, "No Internet Connection", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+                else{
+                    startActivity(new Intent(MainActivity.this, AddShowActivity.class));
+                }
+            }
+        });
+
         //Toast.makeText(MainActivity.this,"tmdb the access token is:"+ BuildConfig.THE_MOVIE_DB_API_TOKEN, Toast.LENGTH_SHORT).show();
-        if (accessToken == ""){
+        sp = getSharedPreferences(PREF,Context.MODE_PRIVATE);
+        if (sp.getString(scAccessToken,"") == ""){
             //Toast.makeText(MainActivity.this,"no the access token is:"+ accessToken, Toast.LENGTH_SHORT).show();
             //authorize applicaton
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://api.trakt.tv/oauth/authorize?response_type=code"+"&client_id="+clientId+
@@ -147,8 +151,9 @@ public class MainActivity extends AppCompatActivity {
             accessTokenCall.enqueue(new Callback<AccessToken>() {
                 @Override
                 public void onResponse(Call<AccessToken> call, Response<AccessToken> response) {
-                    accessToken = response.body().getAccessToken();
-                    Toast.makeText(MainActivity.this,"yay the access token is:"+ accessToken,Toast.LENGTH_SHORT).show();
+                    sp = getSharedPreferences(PREF,Context.MODE_PRIVATE);
+                    sp.edit().putString(scAccessToken,response.body().getAccessToken()).commit();
+                    //Toast.makeText(MainActivity.this,"yay the access token is:"+ accessToken,Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
